@@ -8,11 +8,13 @@ Platforms covered:
 2. Gitlab
 3. Bitbucket
 4. OpenHub
+5. OpenSuse
 """
 GITHUB_BASE_URL="https://github.com/"
 GITLAB_BASE_URL="https://gitlab.com/api/v4/users?username="
 BITBUCKET_BASE_URL="https://api.bitbucket.org/2.0/users/"
 OPENHUB_BASE_URL="https://www.openhub.net/accounts/"
+OPENSUSE_BASE_URL="https://connect.opensuse.org/pg/profile/"
 usernameStatusContainer=[]
 arguments = sys.argv
 username = arguments[1]
@@ -50,6 +52,14 @@ def isUsernameValid(username):
 		isOpenHubUsernameTaken=1
 	usernameStatusContainer.append(
 		generateDictionary(OPENHUB_BASE_URL,"OpenHub",isOpenHubUsernameTaken)
+		)
+	#OpenSuse
+	r=requests.get(OPENSUSE_BASE_URL+username)
+	isOpenSuseUsernameAvailable=1
+	if("Sorry" in r.text):
+		isOpenSuseUsernameAvailable=0
+	usernameStatusContainer.append(
+		generateDictionary(OPENSUSE_BASE_URL,"OpenSUSE",isOpenSuseUsernameAvailable)
 		)
 	return usernameStatusContainer
 """
