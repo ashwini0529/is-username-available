@@ -10,7 +10,7 @@ Platforms covered:
 4. OpenHub
 5. OpenSuse
 """
-GITHUB_BASE_URL="https://github.com/"
+GITHUB_BASE_URL="https://api.github.com/users/"
 GITLAB_BASE_URL="https://gitlab.com/api/v4/users?username="
 BITBUCKET_BASE_URL="https://api.bitbucket.org/2.0/users/"
 OPENHUB_BASE_URL="https://www.openhub.net/accounts/"
@@ -21,9 +21,9 @@ username = arguments[1]
 def isUsernameValid(username):
 	#Github
 	r=requests.get(GITHUB_BASE_URL+username)
-	statusCode = r.status_code
-	isGithubUsernameTaken=0
-	if(statusCode==200):
+	if "message" in r.json() and r.json()["message"]=="Not Found":
+		isGithubUsernameTaken=0
+	else:
 		isGithubUsernameTaken=1
 	usernameStatusContainer.append(
 		generateDictionary(GITHUB_BASE_URL,"GitHub",isGithubUsernameTaken)
